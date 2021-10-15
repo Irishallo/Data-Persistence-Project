@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class MainManager : MonoBehaviour
 {
@@ -13,7 +16,7 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public Text HighScoreText;
     public GameObject GameOverText;
-    public int highScorePoints;
+    
     
     private bool m_Started = false;
     private int m_Points;
@@ -24,7 +27,7 @@ public class MainManager : MonoBehaviour
     void Start()
     {
         ScoreText.text = $"Score : {MainMenuManager.Instance.playerName} : {m_Points}";
-        HighScoreText.text = $"Score : {MainMenuManager.Instance.playerName} : {highScorePoints}";
+        HighScoreText.text = MainMenuManager.Instance.highScore;
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -77,10 +80,22 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
 
-        if (m_Points > highScorePoints)
+        if (m_Points > MainMenuManager.Instance.highScorePoints)
         {
-            highScorePoints = m_Points;
+            MainMenuManager.Instance.highScorePoints = m_Points;
             HighScoreText.text = $"Score : {MainMenuManager.Instance.playerName} : {m_Points}";
+            MainMenuManager.Instance.highScore = $"High Score : {MainMenuManager.Instance.playerName} : {m_Points}";
         }
+    }
+
+    public void Exit()
+    {
+        MainMenuManager.Instance.SaveHighScore();
+
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit(); // original code to quit unity player
+#endif
     }
 }

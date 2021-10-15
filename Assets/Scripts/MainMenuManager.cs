@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class MainMenuManager : MonoBehaviour
 {
     public static MainMenuManager Instance;
 
     public string playerName;
+    public string highScore;
+    public int highScorePoints;
 
     private void Awake()
     {
@@ -18,18 +21,42 @@ public class MainMenuManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        
+        highScore = $"High Score : 0";
+
+
     }
 
-    // Start is called before the first frame update
-    void Start()
+    [System.Serializable]
+    class SaveData
     {
-        
+        public string playerName;
+        public string highScore;
+        public int highScorePoints;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SaveHighScore()
     {
-        
+        SaveData data = new SaveData();
+        data.playerName = playerName;
+        data.highScore = highScore;
+        data.highScorePoints = highScorePoints;
+
+        string json = JsonUtility.ToJson(data);
+
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    public void LoadHighScore()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            playerName = data.playerName;
+            highScore = data.highScore;
+            highScorePoints = data.highScorePoints;
+        }
     }
 }
