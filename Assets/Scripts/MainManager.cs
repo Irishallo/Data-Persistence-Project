@@ -85,6 +85,7 @@ public class MainManager : MonoBehaviour
             MainMenuManager.Instance.highScorePoints = m_Points;
             HighScoreText.text = $"Score : {MainMenuManager.Instance.playerName} : {m_Points}";
             MainMenuManager.Instance.highScore = $"High Score : {MainMenuManager.Instance.playerName} : {m_Points}";
+            MainMenuManager.Instance.SaveHighScore();
         }
     }
 

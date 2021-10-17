@@ -11,7 +11,7 @@ public class MenuUIHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MainMenuManager.Instance.LoadHighScore();
+        mainInputField.text = MainMenuManager.Instance.playerName;
     }
 
     // Update is called once per frame

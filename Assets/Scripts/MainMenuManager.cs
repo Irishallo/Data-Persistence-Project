@@ -21,8 +21,7 @@ public class MainMenuManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        highScore = $"High Score : 0";
-
+        LoadHighScore();
 
     }
 
@@ -57,6 +56,9 @@ public class MainMenuManager : MonoBehaviour
             playerName = data.playerName;
             highScore = data.highScore;
             highScorePoints = data.highScorePoints;
+        } else
+        {
+            highScore = $"High Score : 0";
         }
     }
 }
